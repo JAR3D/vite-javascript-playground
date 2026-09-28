@@ -1,19 +1,15 @@
 import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
-import pluginImport from 'eslint-plugin-import';
+import globals from 'globals';
 import pluginPrettier from 'eslint-plugin-prettier';
 import prettier from 'eslint-config-prettier';
-
-const compat = new FlatCompat();
 
 export default [
   { ignores: ['node_modules', 'dist'] },
   js.configs.recommended,
-  ...compat.extends('airbnb-base'),
   prettier,
   {
+    files: ['**/*.js'],
     plugins: {
-      import: pluginImport,
       prettier: pluginPrettier,
     },
     languageOptions: {
@@ -29,9 +25,16 @@ export default [
     },
   },
   {
+    files: ['**/*.js'],
+    ignores: ['eslint.config.js'],
+    languageOptions: {
+      globals: globals.browser,
+    },
+  },
+  {
     files: ['eslint.config.js'],
-    rules: {
-      'import/no-extraneous-dependencies': 'off',
+    languageOptions: {
+      globals: globals.node,
     },
   },
 ];
